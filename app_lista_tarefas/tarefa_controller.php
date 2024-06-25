@@ -5,7 +5,7 @@ require "conexao.php";
 
 $acao = isset($_GET['acao']) ? $_GET['acao'] : $acao;
 
-if($acao == 'inserir') {
+if ($acao == 'inserir') {
     $tarefa = new Tarefa();
     $tarefa->__set('tarefa', $_POST['tarefa']);
 
@@ -21,4 +21,14 @@ if($acao == 'inserir') {
 
     $tarefaService = new TarefaService($conexao, $tarefa);
     $tarefas = $tarefaService->recuperar();
+} else if ($acao == 'atualizar') {
+    $tarefa = new Tarefa();
+    $tarefa ->__set('id', $_POST['id'])
+            ->__set('tarefa', $_POST['tarefa']);
+
+    $conexao = new Conexao();
+    $tarefaService = new TarefaService($conexao, $tarefa);
+    if ($tarefaService->atualizar()) {
+        header('Location: todas_tarefas.php');
+    }
 }
